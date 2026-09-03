@@ -22,7 +22,7 @@ CREATE TABLE properties (
     title VARCHAR(200) NOT NULL,
     basePrice DECIMAL(10,2) NOT NULL,
     latitude DECIMAL(9,6) NOT NULL,
-    longitude DECIMAL(9,6) NOT NULL,
+    longitude DECIMAL(9,6) NOT NULL
 );
 
 CREATE TABLE bookings (
@@ -31,9 +31,11 @@ CREATE TABLE bookings (
     property_id INTEGER NOT NULL REFERENCES properties(id) ON DELETE CASCADE,
     status VARCHAR(20) NOT NULL DEFAULT 'CONFIRMED' 
         CHECK (status IN ('CONFIRMED','CHECKED_IN','COMPLETED')),
-    total_cost DECIMAL(10,2) NOT NULL CHECK (total_amount >= 0),
+    total_cost DECIMAL(10,2) NOT NULL CHECK (total_cost >= 0),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT valid_date_range CHECK (check_out_date > check_in_date)
+    check_in_date DATE NOT NULL,
+    check_out_date DATE NOT NULL,
+    CONSTRAINT valid_date CHECK (check_out_date > check_in_date)
 );
 
 

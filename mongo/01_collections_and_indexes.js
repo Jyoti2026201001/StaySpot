@@ -60,3 +60,24 @@ db.createCollection("SearchSessions", {
     }
   }
 });
+// 2. Create indexes
+
+// 2dsphere index on location for geospatial queries
+db.SearchSessions.createIndex({ location: "2dsphere" });
+
+// TTL index: expire search sessions after 2 hours (7200 seconds)
+db.SearchSessions.createIndex(
+  { created_at: 1 },
+  { expireAfterSeconds: 7200 }
+);
+
+// Additional indexes
+db.PropertyAmenities.createIndex({ property_id: 1 });
+db.PropertyAmenities.createIndex({ amenities: 1 });
+
+db.PropertyReviews.createIndex({ property_id: 1 });
+db.PropertyReviews.createIndex({ rating: 1 });
+db.PropertyReviews.createIndex({ tags: 1 });
+db.PropertyReviews.createIndex({ created_at: -1 });
+
+print("MongoDB collections and indexes created successfully.");
